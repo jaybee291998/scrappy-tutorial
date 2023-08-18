@@ -1,5 +1,5 @@
 import scrapy
-
+from bookscraper.items import BookItem
 
 class BookspiderSpider(scrapy.Spider):
     name = "bookspider"
@@ -36,6 +36,7 @@ class BookspiderSpider(scrapy.Spider):
 
         title = product_summary.css('h1::text').get()
         price = product_summary.css('p.price_color::text').get()
+        availability = product_summary.css('p.availability::text').get()
 
         product_type = table_rows[1].css('td::text').get()
         price_excl_tax = table_rows[2].css('td::text').get()
@@ -43,15 +44,17 @@ class BookspiderSpider(scrapy.Spider):
         tax = table_rows[4].css('td::text').get()
         rating = response.css('p.star-rating').attrib['class'].split(' ')[-1]
 
-        yield {
-            'url': response.url,
-            'title': title.strip(),
-            'product_type': product_type.strip(),
-            'price': price.strip(),
-            'rating': rating.strip(),
-            'genre': genre.strip(),
-            'description': product_description.strip(),
-            'price_excl_tax': price_excl_tax.strip(),
-            'price_incl_tax': price_incl_tax.strip(),
-            'tax': tax.strip(),
-        }
+        bookItem = BookItem()
+        bookItem['url'] = str(response.url),
+        bookItem['title'] = title
+        bookItem['product_type'] = product_type
+        bookItem['price'] = price
+        bookItem['rating'] = rating
+        bookItem['genre'] = genre
+        bookItem['description'] = product_description
+        bookItem['price_excl_tax'] = price_excl_tax
+        bookItem['price_incl_tax'] = price_incl_tax
+        bookItem['tax'] = tax
+        bookItem['availability'] = availability
+
+        yield bookItem
