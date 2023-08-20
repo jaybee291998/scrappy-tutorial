@@ -44,25 +44,16 @@ class BookscraperPipeline:
         return item
 
     def rating_string_to_int(self, rating_string):
-        match rating_string:
-            case 'one':
-                return 1
-            case 'two':
-                return 2
-            case 'three':
-                return 3
-            case 'four':
-                return 4
-            case 'five':
-                return 5
-            case 'six':
-                return 6
-            case 'seven':
-                return 7
-            case 'eight':
-                return 8
-            case 'nine':
-                return 9
-            case 'zero':
-                return 0
+        if rating_string == 'one':
+            return 1
+        elif rating_string == 'two':
+            return 2
+        elif rating_string == 'three':
+            return 3
+        elif rating_string == 'four':
+            return 4
+        elif rating_string == 'five':
+            return 5
+        elif rating_string == 'zero':
+            return 0
 
